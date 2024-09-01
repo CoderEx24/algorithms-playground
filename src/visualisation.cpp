@@ -1,4 +1,5 @@
 #include "visualisation.hpp"
+#include "heap.hpp"
 #include <numeric>
 #include <sstream>
 #include <vector>
@@ -23,7 +24,6 @@ class DummyVisualisation : public Visualisation
 
         void paint_controls(Rectangle bounds) override
         {
-            GuiWindowBox(bounds, "Dummy Controls");
             GuiToggle({ bounds.x * 1.30f, bounds.y * 1.40f,
                         80, 30 }, "Enable", &enable_textbox);
             GuiTextBox({ bounds.x * 1.01f, bounds.y * 1.40f,
@@ -36,6 +36,7 @@ std::vector<std::string> Visualisation::get_visualisations_list()
     std::vector<std::string> algorithms;
     // {{{ algorithm list
     algorithms.push_back("Dummy");
+    algorithms.push_back("Heap");
     // }}}
 
     return algorithms;
@@ -57,6 +58,8 @@ std::string Visualisation::get_visualisations_list_string()
 
 std::unique_ptr<Visualisation> Visualisation::get_visualisation(const char* choice)
 {
+    std::string c = choice;
+    if (c == "Heap") return std::make_unique<Heap>();
     return std::make_unique<DummyVisualisation>();
 }
 

@@ -51,20 +51,27 @@ int main()
 
             current_choice = active;
         }
+        else if (active == -1)
+            vis = nullptr;
 
         GuiLabel({ LIST_WIDTH * 1.02, 10, WINDOW_WIDTH - LIST_WIDTH, 30 }, algorithms_list[current_choice].c_str());
         
         if (vis)
         {
-            vis->paint_visualisation({LIST_WIDTH * 1.02,
-                                      WINDOW_HEIGHT * 0.10, 
-                                      (WINDOW_WIDTH - LIST_WIDTH) * 0.6, 
-                                      WINDOW_HEIGHT * 0.8}, GetFrameTime());
+            Rectangle visualisation_bounds = {LIST_WIDTH * 1.02,
+                                              WINDOW_HEIGHT * 0.10, 
+                                              (WINDOW_WIDTH - LIST_WIDTH) * 0.6, 
+                                              WINDOW_HEIGHT * 0.8};
 
-            vis->paint_controls({LIST_WIDTH * 1.02 + (WINDOW_WIDTH - LIST_WIDTH) * 0.6,
-                                 WINDOW_HEIGHT * 0.10,
-                                 (WINDOW_WIDTH - LIST_WIDTH) * 0.4,
-                                 WINDOW_HEIGHT * 0.8});
+
+            Rectangle control_bounds = {LIST_WIDTH * 1.02 + (WINDOW_WIDTH - LIST_WIDTH) * 0.6,
+                                        WINDOW_HEIGHT * 0.10,
+                                        (WINDOW_WIDTH - LIST_WIDTH) * 0.4,
+                                        WINDOW_HEIGHT * 0.8};
+
+            vis->paint_visualisation(visualisation_bounds, GetFrameTime());
+            GuiWindowBox(control_bounds, algorithms_list[current_choice].c_str());
+            vis->paint_controls(control_bounds);
         }
         EndDrawing();
     }
