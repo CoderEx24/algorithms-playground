@@ -9,36 +9,25 @@
 #include <raygui.h>
 #include <raygui_styles/cyber/style_cyber.h>
 
-#define WINDOW_SIDELENGTH 800
+#include "visualisation.hpp"
+
+#define WINDOW_WIDTH 1200
+#define WINDOW_HEIGHT 800
 
 int main()
 {
-    InitWindow(WINDOW_SIDELENGTH, WINDOW_SIDELENGTH, "Algorithms Playground");
+    InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Algorithms Playground");
     SetTargetFPS(30);
     GuiLoadStyleCyber();
     GuiSetStyle(0, 16, 16);
 
     int scroll_index = 0;
     int active = 0;
+    int current_choice = -1;
 
-    std::vector<std::string> algos(0);
-    algos.push_back("algo1");
-    algos.push_back("sdiufsdfalgo2");
-    algos.push_back("algo3");
-    algos.push_back("algo4");
-    algos.push_back("algo5");
-    algos.push_back("algo6");
-    algos.push_back("algo7");
-    algos.push_back("algo8");
-    algos.push_back("algo9");
-
-    auto algos_string = std::accumulate(algos.begin(), algos.end(), std::string(), [](auto i, auto b) { 
-            std::stringstream s;
-            s << i << b << ";";
-            return s.str();
-    });
-
-    algos_string.pop_back();
+    std::vector<std::string> algorithms_list = Visualisation::get_visualisations_list();
+    std::string algorithms_list_string = Visualisation::get_visualisations_list_string();
+    std::unique_ptr<Visualisation> vis = nullptr;
 
     while(!WindowShouldClose())
     {
@@ -49,16 +38,34 @@ int main()
         ClearBackground(GetColor(GuiGetStyle(0, BACKGROUND_COLOR)));
     
 
-        const int LIST_WIDTH = WINDOW_SIDELENGTH * 0.20;
-        const int LIST_HEIGHT = WINDOW_SIDELENGTH;
-        GuiListView({ 0, 0, LIST_WIDTH, LIST_HEIGHT }, algos_string.c_str(), &scroll_index, &active);
+        const int LIST_WIDTH = WINDOW_WIDTH * 0.20;
+        const int LIST_HEIGHT = WINDOW_HEIGHT;
+        GuiListView({ 0, 0, LIST_WIDTH, LIST_HEIGHT }, algorithms_list_string.c_str(), &scroll_index, &active);
 
 
-        /* GuiListView({ 0, 0, LIST_WIDTH, LIST_HEIGHT }, "Algorithms;"
-                                         "Algorithm2", &scroll_index, &active); */
+        if (active >= 0 && current_choice != active)
+        {
+            const char* chosen_algo = algorithms_list[active].c_str();
 
-        GuiLabel({ LIST_WIDTH * 1.02, 10, WINDOW_SIDELENGTH - LIST_WIDTH, 30 }, algos[active].c_str());
-            
+            vis = Visualisation::get_visualisation(chosen_algo);
+
+            current_choice = active;
+        }
+
+        GuiLabel({ LIST_WIDTH * 1.02, 10, WINDOW_WIDTH - LIST_WIDTH, 30 }, algorithms_list[current_choice].c_str());
+        
+        if (vis)
+        {
+            vis->paint_visualisation({LIST_WIDTH * 1.02,
+                                      WINDOW_HEIGHT * 0.10, 
+                                      (WINDOW_WIDTH - LIST_WIDTH) * 0.6, 
+                                      WINDOW_HEIGHT * 0.8}, GetFrameTime());
+
+            vis->paint_controls({LIST_WIDTH * 1.02 + (WINDOW_WIDTH - LIST_WIDTH) * 0.6,
+                                 WINDOW_HEIGHT * 0.10,
+                                 (WINDOW_WIDTH - LIST_WIDTH) * 0.4,
+                                 WINDOW_HEIGHT * 0.8});
+        }
         EndDrawing();
     }
 
