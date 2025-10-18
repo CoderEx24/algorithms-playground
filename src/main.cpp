@@ -1,8 +1,5 @@
-#include <numeric>
 #include <vector>
 #include <string>
-#include <sstream>
-#include <iostream>
 
 #include <raylib.h>
 #define RAYGUI_IMPLEMENTATION
