@@ -20,7 +20,6 @@ int main()
     GuiSetStyle(0, 16, 16);
 
     int scroll_index = 0;
-    int active = 0;
     int current_choice = 0;
 
     std::array<std::unique_ptr<Visualisation>, 2> algorithms_list { 
@@ -46,7 +45,7 @@ int main()
 
         const int LIST_WIDTH = WINDOW_WIDTH * 0.20;
         const int LIST_HEIGHT = WINDOW_HEIGHT;
-        GuiListView({ 0, 0, LIST_WIDTH, LIST_HEIGHT }, algorithms_list_string, &scroll_index, &active);
+        GuiListView({ 0, 0, LIST_WIDTH, LIST_HEIGHT }, algorithms_list_string, &scroll_index, &current_choice);
 
 
         GuiLabel({ LIST_WIDTH * 1.02, 10, WINDOW_WIDTH - LIST_WIDTH, 30 }, algorithms_labels[current_choice]);
