@@ -3,7 +3,6 @@
 
 #include "visualisation.hpp"
 #include <string>
-#include <raygui.h>
 
 class DummyVisualisation : public Visualisation
 {
