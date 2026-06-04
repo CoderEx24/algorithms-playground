@@ -1,5 +1,7 @@
 #include "dummy.hpp"
 
+#include <raygui.h>
+
 void DummyVisualisation::paint_visualisation(Rectangle bounds, float dt)
 {
     DrawRectangle(bounds.x, bounds.y, bounds.width, bounds.height, 

@@ -33,7 +33,7 @@ int main()
         "Heap"
     };
 
-    const char* algorithms_list_string = "Dummy;Heap\0" ;
+    const char* algorithms_list_string = "Dummy;Heap" ;
 
     while(!WindowShouldClose())
     {

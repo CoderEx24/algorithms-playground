@@ -1,9 +1,9 @@
 #include "heap.hpp"
-#include <raylib.h>
-#include <raygui.h>
+
 #include <stdexcept>
 #include <string>
 #include <iostream>
+#include <raygui.h>
 
 void HeapVisualisation::heapify()
 {
