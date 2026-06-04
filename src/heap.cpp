@@ -5,7 +5,7 @@
 #include <string>
 #include <iostream>
 
-void Heap::heapify()
+void HeapVisualisation::heapify()
 {
     if (heap.size() <= 1) return;
 
@@ -14,7 +14,7 @@ void Heap::heapify()
             std::swap(heap[parent(i)], heap[i]);
 }
 
-void Heap::paint_controls(Rectangle bounds)
+void HeapVisualisation::paint_controls(Rectangle bounds)
 {
     Rectangle textbox = { bounds.x * 1.01f, bounds.y * 1.40f,
                           bounds.width * 0.8f, 30 };
@@ -51,7 +51,7 @@ void Heap::paint_controls(Rectangle bounds)
     }
 }
 
-void Heap::paint_visualisation(Rectangle bounds, float dt)
+void HeapVisualisation::paint_visualisation(Rectangle bounds, float dt)
 {
     for (int i = 1; i < heap.size(); i ++)
     {
