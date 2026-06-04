@@ -4,6 +4,7 @@
 #include "visualisation.hpp"
 
 #include <string>
+#include <vector>
 #include <cmath>
 
 class HeapVisualisation : public Visualisation
