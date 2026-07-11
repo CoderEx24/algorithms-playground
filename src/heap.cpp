@@ -81,39 +81,20 @@ void HeapVisualisation::paint_controls(Rectangle bounds)
 
 void HeapVisualisation::paint_visualisation(Rectangle bounds, float dt)
 {
+    DrawRectangleLinesEx(bounds, 1, PINK);
+    Rectangle tree_bounds = { bounds.x,
+        bounds.y + bounds.height * .2f, 
+        bounds.width, 
+        bounds.height * .8f };
+
+    DrawRectangleLinesEx(tree_bounds, 4, GREEN);
     for (int i = 1; i < heap.size(); i ++)
     {
-        DrawRectangle(bounds.x * 1.20f + 40 * i, bounds.y * 1.30f, 40, 40, WHITE);
-        DrawText(TextFormat("%i", heap[i]), 6 + bounds.x * 1.20f + 40 * i, 6 + bounds.y * 1.30f, 16, BLACK);
+        Vector2 node_coords = calculate_node_coords(tree_bounds, i);
+
+        DrawCircle(node_coords.x, node_coords.y, 10, WHITE);
+        DrawText(TextFormat("%d", heap[i]), node_coords.x, node_coords.y, 7, BLACK);
     }
-
-
-    for (int h = 0; std::pow(2, h) <= heap.size() - 1; h ++)
-        for (int i = 0; i < std::pow(2, h); i ++)
-        {
-            int ball_radius = 60;
-            Vector2 base = { bounds.x + bounds.width * 0.50f, bounds.y + bounds.height * 0.30f };
-            Vector2 ball = { base.x - (ball_radius * 2.0f) * h + (ball_radius * 3.0f) * i,
-                             base.y + (ball_radius * 2.5f) * h };
-
-            int idx = std::pow(2, h) + i;
-            if (idx + 1 > heap.size()) break;
-            DrawCircle(ball.x, ball.y, ball_radius, WHITE);
-            DrawText(TextFormat("h:%i i:%i %i\n%i", h, i, idx, heap[idx]), ball.x + 3, ball.y + 3, 10, BLACK);
-        }
-
-    /* for (int level = 0; level < std::floor(std::log2(heap.size())); level++)
-        for (int i = std::pow(2, level) - 1; i < std::pow(2, level + 1); i ++)
-        {
-            int ball_radius = 20;
-            Vector2 base = { bounds.x * 2.0f, bounds.y * 2.0f };
-            Vector2 ball = { base.x - (ball_radius * 2.90f) * level + (ball_radius * 0.90f) * i, 
-                             base.y + (ball_radius * 1.40f) * level };
-
-            DrawCircle(ball.x, ball.y, ball_radius, WHITE);
-            DrawText(TextFormat("%i", heap[i]), ball.x + 6, ball.y + 6, 6, BLACK);
-        }
-        */
 
 }
 
