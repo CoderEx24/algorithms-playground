@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <string>
 #include <iostream>
+#include <cmath>
 #include <raygui.h>
 
 void HeapVisualisation::heapify()
@@ -12,6 +13,33 @@ void HeapVisualisation::heapify()
     for (size_t i = heap.size() - 1; i > 1; i /= 2)
         if (heap[parent(i)] <= heap[i])
             std::swap(heap[parent(i)], heap[i]);
+}
+
+Vector2 HeapVisualisation::calculate_node_coords(Rectangle tree_bounds, size_t node_index)
+{
+    const int LEVEL_HEIGHT = 30;
+
+    if (node_index == 1) return { tree_bounds.x + tree_bounds.width / 2, tree_bounds.y + LEVEL_HEIGHT };
+
+    Vector2 node_coords = { tree_bounds.x,  tree_bounds.y };
+    int N = (int) heap.size() - 1;
+    int h_of_node = 0;
+    int i = 1;
+    for (; i <= node_index; i *= 2, h_of_node ++);
+    i /= 2;
+
+    int index_in_column = node_index - i; 
+
+    if (index_in_column == 0)
+        node_coords.x += tree_bounds.width / i / 2;
+    else if (index_in_column == i - 1)
+        node_coords.x += tree_bounds.width - tree_bounds.width / i / 2;
+    else
+        node_coords.x += (tree_bounds.width / i / 2) + (index_in_column) * (tree_bounds.width / i);
+
+    node_coords.y += LEVEL_HEIGHT * (h_of_node + .5f);
+
+    return node_coords;
 }
 
 void HeapVisualisation::paint_controls(Rectangle bounds)

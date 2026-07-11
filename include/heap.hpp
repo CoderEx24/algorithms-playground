@@ -14,6 +14,7 @@ class HeapVisualisation : public Visualisation
         std::string current_entry;
 
         void heapify();
+        Vector2 calculate_node_coords(Rectangle, size_t);
         size_t right_child(size_t i) { return 2 * i; }
         size_t left_child(size_t i) { return 2 * i + 1; }
         size_t parent(size_t i) { return std::floor(i / 2); }
