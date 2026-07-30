@@ -6,8 +6,11 @@
 #include <raygui.h>
 #include <raygui_styles/cyber/style_cyber.h>
 
-#include "dummy.hpp"
-#include "heap.hpp"
+#ifdef DUMMY_ONLY
+#  include "dummy.hpp"
+#else
+#  include "heap.hpp"
+#endif
 
 #define WINDOW_WIDTH 1200
 #define WINDOW_HEIGHT 800
@@ -23,16 +26,28 @@ int main()
     int current_choice = 0;
 
     std::array<std::unique_ptr<Visualisation>, 2> algorithms_list { 
+#ifdef DUMMY_ONLY
         std::make_unique<DummyVisualisation>(),
+#else
         std::make_unique<HeapVisualisation>(),
+#endif
     };
 
     std::array algorithms_labels {
+#ifdef DUMMY_ONLY
         "Dummy",
+#else
         "Heap"
+#endif
     };
 
-    const char* algorithms_list_string = "Dummy;Heap" ;
+
+    std::string algorithms_list_string;
+    for (const auto& elem : algorithms_labels)
+    {
+        algorithms_list_string.append(elem);
+        algorithms_list_string.append(";");
+    }
 
     while(!WindowShouldClose())
     {
@@ -45,7 +60,7 @@ int main()
 
         const int LIST_WIDTH = WINDOW_WIDTH * 0.20;
         const int LIST_HEIGHT = WINDOW_HEIGHT;
-        GuiListView({ 0, 0, LIST_WIDTH, LIST_HEIGHT }, algorithms_list_string, &scroll_index, &current_choice);
+        GuiListView({ 0, 0, LIST_WIDTH, LIST_HEIGHT }, algorithms_list_string.c_str(), &scroll_index, &current_choice);
 
 
         GuiLabel({ LIST_WIDTH * 1.02, 10, WINDOW_WIDTH - LIST_WIDTH, 30 }, algorithms_labels[current_choice]);
